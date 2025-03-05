@@ -1,46 +1,42 @@
-package org.cds.entities;// CD.java
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+package org.cds.entities;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.cds.entities.Gravadora;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Table(name = "CD")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class CD extends PanacheEntity {
+@EqualsAndHashCode(callSuper = false)
+public class CD extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo_cd")
+    public Long codigoCD;
 
     @ManyToOne
     @JoinColumn(name = "codigo_gravadora")
-    private Gravadora gravadora;
-
-    @Column(name = "nome_cd", length = 60)
-    private String nomeCd;
-
-    @Column(name = "preco_venda", precision = 14, scale = 2)
-    private BigDecimal precoVenda;
-
-    @Column(name = "data_lancamento")
-    private LocalDate dataLancamento;
+    public Gravadora gravadora;
 
     @ManyToOne
-    @JoinColumn(name = "cd_indicado")
-    private CD cdIndicado;
+    @JoinColumn(name = "Codigo_Banda")
+    private Banda banda;
 
-    @Column(name = "quantidade_estoque")
-    private Integer quantidadeEstoque;
+    @Column(name = "nome_cd", length = 255)
+    public String nomeCD;
 
-    @ManyToMany
-    @JoinTable(
-            name = "CD_CATEGORIAS",
-            joinColumns = @JoinColumn(name = "codigo_cd"),
-            inverseJoinColumns = @JoinColumn(name = "codigo_categoria")
-    )
-    private List<CdCategoria> categorias;
+    @Column(name = "preco_venda", precision = 10, scale = 2)
+    public BigDecimal precoVenda;
+
+    @Column(name = "data_lancamento")
+    public LocalDate dataLancamento;
+
+    @ManyToOne
+    @JoinColumn(name = "codigo_autor")
+    private Autor autor;
+
 }
-
